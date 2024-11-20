@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XXX协会 - 三周年纪念</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .photo-caption {
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
+        .navigation-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .navigation-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+        .year-badge {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .project-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .project-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .project-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-hidden">
+    <div class="relative w-full h-screen">
+        <!-- 封面页 -->
+        <div class="slide active" id="slide0">
+            <div class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-blue-900 to-black">
+                <h1 class="text-6xl font-bold mb-8 fade-in">XXX协会</h1>
+                <h2 class="text-4xl mb-4 fade-in" style="animation-delay: 0.3s">三周年纪念相册</h2>
+                <p class="text-xl text-gray-300 mb-4 fade-in" style="animation-delay: 0.6s">见证每一届的成长与荣耀</p>
+                <div class="text-xl text-gray-300 fade-in" style="animation-delay: 0.6s">2021-2024</div>
+                <button onclick="nextSlide()" class="mt-16 bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-lg transition-all fade-in" style="animation-delay: 0.9s">
+                    开启回忆之旅
+                </button>
+            </div>
+        </div>
+
+        <!-- 2020 & 2021届 -->
+        <div class="slide" id="slide1">
+            <div class="relative h-full">
+                <img src="./image/banner/2022021.jpeg" alt="2020 & 2021届成员合照" class="w-full h-full object-cover"/>
+                <div class="absolute top-8 right-8">
+                    <div class="year-badge text-3xl font-bold px-6 py-3 rounded-full">2021</div>
+                </div>
+                <div class="photo-caption absolute bottom-0 left-0 right-0 p-8">
+                    <h2 class="text-4xl font-bold mb-4">创始元年</h2>
+                    <p class="text-xl text-gray-300 max-w-3xl">
+                        这是XXX协会的第一届成员(MSC实验室)，他们以创新和勇气开启了协会的篇章。
+                    </p>
+                    <div class="mt-4 text-gray-400">
+                        <span class="mr-8">核心创始成员：7人</span>
+                        <span class="mr-8">主攻方向：就业、Web开发、Java开发、前端开发、算法竞赛</span>
+                        <span>首届成员：xxx、xxx、xxx、xxx</span>
+                    </div>
+                    <button onclick="showProjects('back2021')" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all">
+                        回忆·启封
+                    </button>
+                    <button onclick="showProjects(2021)" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all">
+                        征途·再现
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2022届 -->
+        <div class="slide" id="slide2">
+            <div class="relative h-full">
+                <img src="/api/placeholder/1920/1080" alt="2022届成员合照" class="w-full h-full object-cover"/>
+                <div class="absolute top-8 right-8">
+                    <div class="year-badge text-3xl font-bold px-6 py-3 rounded-full">2022</div>
+                </div>
+                <div class="photo-caption absolute bottom-0 left-0 right-0 p-8">
+                    <h2 class="text-4xl font-bold mb-4">蓬勃发展</h2>
+                    <p class="text-xl text-gray-300 max-w-3xl">
+                        第二届成员带来了新的活力，协会规模进一步扩大。
+                    </p>
+                    <div class="mt-4 text-gray-400">
+                        <span class="mr-8">在册成员：58人</span>
+                        <span class="mr-8">技术方向：Web全栈、算法竞赛</span>
+                        <span>会长：李华</span>
+                    </div>
+                    <button onclick="showProjects(2022)" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all">
+                        查看项目成果
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2023届 -->
+        <div class="slide" id="slide3">
+            <div class="relative h-full">
+                <img src="/api/placeholder/1920/1080" alt="2023届成员合照" class="w-full h-full object-cover"/>
+                <div class="absolute top-8 right-8">
+                    <div class="year-badge text-3xl font-bold px-6 py-3 rounded-full">2023</div>
+                </div>
+                <div class="photo-caption absolute bottom-0 left-0 right-0 p-8">
+                    <h2 class="text-4xl font-bold mb-4">硕果累累</h2>
+                    <p class="text-xl text-gray-300 max-w-3xl">
+                        这一年是协会发展的重要里程碑。
+                    </p>
+                    <div class="mt-4 text-gray-400">
+                        <span class="mr-8">在册成员：86人</span>
+                        <span class="mr-8">技术方向：全栈开发、人工智能、云计算</span>
+                        <span>会长：王强</span>
+                    </div>
+                    <button onclick="showProjects(2023)" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all">
+                        查看项目成果
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2024届 -->
+        <div class="slide" id="slide4">
+            <div class="relative h-full">
+                <img src="/api/placeholder/1920/1080" alt="2024届成员合照" class="w-full h-full object-cover"/>
+                <div class="absolute top-8 right-8">
+                    <div class="year-badge text-3xl font-bold px-6 py-3 rounded-full">2024</div>
+                </div>
+                <div class="photo-caption absolute bottom-0 left-0 right-0 p-8">
+                    <h2 class="text-4xl font-bold mb-4">继往开来</h2>
+                    <p class="text-xl text-gray-300 max-w-3xl">
+                        站在三周年的新起点上，新一届成员正在书写属于他们的篇章。
+                    </p>
+                    <div class="mt-4 text-gray-400">
+                        <span class="mr-8">在册成员：92人</span>
+                        <span class="mr-8">技术方向：全栈开发、区块链、元宇宙</span>
+                        <span>会长：xxx</span>
+                    </div>
+                    <button onclick="showProjects(2024)" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all">
+                        查看项目成果
+                    </button>
+                </div>
+            </div>
+ <!-- 结尾认证页 -->  
+ <div class="slide" id="slide5">  
+    <div class="relative h-full bg-gradient-to-b from-gray-900 to-black">  
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-8">  
+            <h2 class="text-4xl font-bold mb-8">协会纪念认证</h2>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12 mb-12">  
+                <!-- 二维码区域 -->  
+                <div class="bg-white p-4 rounded-lg shadow-lg">  
+                    <img src="/api/placeholder/200/200" alt="认证二维码" class="w-48 h-48"/>  
+                    <p class="text-black text-center mt-2">扫码获取电子证书</p>  
+                </div>  
+
+                <!-- 统计数据 -->  
+                <div class="space-y-6">  
+                    <div class="bg-blue-900 bg-opacity-50 p-6 rounded-lg">  
+                        <h3 class="text-2xl font-bold mb-4">三年成就</h3>  
+                        <div class="grid grid-cols-2 gap-4">  
+                            <div class="text-center">  
+                                <div class="text-3xl font-bold text-blue-400">268</div>  
+                                <div class="text-gray-400">累计成员</div>  
+                            </div>  
+                            <div class="text-center">  
+                                <div class="text-3xl font-bold text-blue-400">42</div>  
+                                <div class="text-gray-400">完成项目</div>  
+                            </div>  
+                            <div class="text-center">  
+                                <div class="text-3xl font-bold text-blue-400">15</div>  
+                                <div class="text-gray-400">技术方向</div>  
+                            </div>  
+                            <div class="text-center">  
+                                <div class="text-3xl font-bold text-blue-400">8</div>  
+                                <div class="text-gray-400">重大奖项</div>  
+                            </div>  
+                        </div>  
+                    </div>  
+
+                    <div class="bg-blue-900 bg-opacity-50 p-6 rounded-lg">  
+                        <h3 class="text-2xl font-bold mb-4">荣誉墙</h3>  
+                        <ul class="space-y-2 text-gray-300">  
+                            <li>• 2023年全国高校技术创新大赛一等奖</li>  
+                            <li>• 2022年互联网+大学生创新创业大赛银奖</li>  
+                            <li>• 2021年最具影响力校园技术社团</li>  
+                        </ul>  
+                    </div>  
+                </div>  
+            </div>  
+
+            <!-- 寄语 -->  
+            <div class="max-w-2xl text-center">  
+                <p class="text-xl text-gray-300 italic">  
+                    "三年光阴，感谢每一位用热情和创造力为XXX协会添砖加瓦的你们。  
+                    愿我们继续在技术的海洋中探索，在创新的道路上前行。"  
+                </p>  
+                <p class="mt-4 text-blue-400">—— XXX协会全体成员</p>  
+            </div>  
+
+            <!-- 分享按钮 -->  
+            <div class="mt-12 flex gap-4">  
+                <button onclick="shareAlbum('wechat')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full flex items-center">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">  
+                        <path d="M8.4 2.4c-4.2 0-7.6 3.4-7.6 7.6s3.4 7.6 7.6 7.6c1.6 0 3.1-0.5 4.3-1.4l0.1 0.1 1.7 1.7c0.4 0.4 1 0.4 1.4 0s0.4-1 0-1.4l-1.7-1.7c0.9-1.2 1.4-2.7 1.4-4.3 0-4.2-3.4-7.6-7.6-7.6zm0 2c3.1 0 5.6 2.5 5.6 5.6s-2.5 5.6-5.6 5.6-5.6-2.5-5.6-5.6 2.5-5.6 5.6-5.6z"/>  
+                    </svg>  
+                    分享到微信  
+                </button>  
+                <button onclick="shareAlbum('weibo')" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full flex items-center">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">  
+                        <path d="M20.9 14.6c-1.2-0.4-2.4-0.7-3.6-1-0.2 0-0.3-0.1-0.5-0.1-0.2-0.1-0.3-0.2-0.4-0.4-0.1-0.2-0.1-0.4 0-0.6 0.1-0.2 0.2-0.3 0.4-0.4 0.2-0.1 0.4-0.1 0.6 0 1.2 0.3 2.4 0.6 3.6 1 0.2 0.1 0.4 0.2 0.5 0.4 0.1 0.2 0.1 0.4 0 0.6-0.1 0.2-0.2 0.4-0.4 0.5-0.2 0.1-0.4 0.1-0.6 0z"/>  
+                    </svg>  
+                    分享到微博  
+                </button>  
+            </div>  
+        </div>  
+    </div>  
+</div>  
+
+        <!-- 其他代码保持不变，只需更新总页数相关的变量和逻辑 -->  
+        </div>
+
+        <!-- 项目展示模态框 -->
+        <div class="project-modal" id="projectModal">
+            <div class="container mx-auto px-4 py-8 h-full overflow-y-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-4xl font-bold" id="projectYear">2021年项目展示</h2>
+                    <button onclick="closeProjects()" class="text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectContainer">
+                    <!-- 项目卡片将通过JavaScript动态添加 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航控件 -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4" id="navigation-dots">
+        </div>
+
+        <!-- 左右切换按钮 -->
+        <div class="absolute top-1/2 transform -translate-y-1/2 w-full px-8 flex justify-between pointer-events-none">
+            <button onclick="prevSlide()" class="bg-black bg-opacity-50 text-white p-4 rounded-full pointer-events-auto hover:bg-opacity-70 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button onclick="nextSlide()" class="bg-black bg-opacity-50 text-white p-4 rounded-full pointer-events-auto hover:bg-opacity-70 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        // 项目数据
+        const projectsData = {
+            2021: [
+                {
+                    title: "校园二手交易平台",
+                    description: "基于Spring Boot + Vue的校园二手物品交易平台，支持商品发布、在线支付等功能",
+                    tech: "Spring Boot, Vue, MySQL",
+                    team: "张明、李四、王五",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "智能图书馆管理系统",
+                    description: "集成RFID技术的图书馆管理系统，实现图书自助借还、智能推荐",
+                    tech: "Java, SpringMVC, Oracle",
+                    team: "赵六、钱七",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "协会官网",
+                    description: "XXX协会官方网站第一版，展示协会活动、成员信息等",
+                    tech: "HTML5, CSS3, JavaScript",
+                    team: "孙八、周九",
+                    image: "/api/placeholder/400/300"
+                }
+            ],
+            2022: [
+                {
+                    title: "校园疫情防控系统",
+                    description: "支持健康打卡、行程记录、疫情数据可视化等功能",
+                    tech: "React, Node.js, MongoDB",
+                    team: "李华、张三",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "在线考试系统",
+                    description: "支持多种题型、自动批改、成绩分析的在线考试平台",
+                    tech: "Vue3, Spring Cloud, MySQL",
+                    team: "王五、赵六",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "智能课程推荐系统",
+                    description: "基于机器学习的个性化课程推荐系统",
+                    tech: "Python, TensorFlow, Flask",
+                    team: "钱七、孙八",
+                    image: "/api/placeholder/400/300"
+                }
+            ],
+            2023: [
+                {
+                    title: "校园元宇宙平台",
+                    description: "3D虚拟校园漫游系统，支持虚拟社交、在线课堂等功能",
+                    tech: "Three.js, WebGL, WebRTC",
+                    team: "王强、李明、张华",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "智慧校园APP",
+                    description: "整合教务、生活、社交等功能的综合性校园APP",
+                    tech: "Flutter, Spring Cloud, Redis",
+                    team: "陈亮、周婷、刘洋",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "校园AI助手",
+                    description: "基于大语言模型的智能问答系统，提供学习辅导和校园信息查询",
+                    tech: "Python, PyTorch, FastAPI",
+                    team: "赵雪、王芳、李强",
+                    image: "/api/placeholder/400/300"
+                }
+            ],
+            2024: [
+                {
+                    title: "区块链学分认证系统",
+                    description: "基于区块链技术的学分与技能认证系统，确保学习成果可信且不可篡改",
+                    tech: "Solidity, Web3.js, React",
+                    team: "陈明、张伟、李琳",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "智能IoT校园",
+                    description: "校园物联网系统，实现教室、宿舍等场所的智能化管理",
+                    tech: "MQTT, Node.js, Vue3",
+                    team: "王晓、赵鑫、刘明",
+                    image: "/api/placeholder/400/300"
+                },
+                {
+                    title: "AR校园导览",
+                    description: "增强现实技术的校园导览系统，提供沉浸式的校园体验",
+                    tech: "Unity3D, ARCore, C#",
+                    team: "张芳、李阳、王婷",
+                    image: "/api/placeholder/400/300"
+                }
+            ],
+            "back2021":[{
+                title:"StartWith2022"
+            },{title:"EndWith2021"}]
+        };
+
+        // 创建导航点
+        const navigationDots = document.getElementById('navigation-dots');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `navigation-dot ${i === 0 ? 'active' : ''}`;
+            dot.onclick = () => goToSlide(i);
+            navigationDots.appendChild(dot);
+        }
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+
+            // 更新导航点
+            const dots = document.querySelectorAll('.navigation-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlides();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlides();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlides();
+        }
+
+        // 项目展示相关函数
+        function showProjects(year) {
+            year = year.toString()
+            const modal = document.getElementById('projectModal');
+            const container = document.getElementById('projectContainer');
+            const yearTitle = document.getElementById('projectYear');
+            const title = year.startsWith("back")?`${year.substring(4,year.length)}级的回忆之旅`:`${year}级项目展示`
+            // 更新标题
+            yearTitle.textContent = title;
+            
+            // 清空现有内容
+            container.innerHTML = '';
+            
+            // 添加项目卡片
+            projectsData[year].forEach(project => {
+                const card = createProjectCard(project,year.startsWith("back"));
+                container.appendChild(card);
+            });
+            
+            // 显示模态框
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function createProjectCard(project,flag=false) {
+            const card = document.createElement('div');
+            card.className = 'project-card rounded-lg overflow-hidden shadow-lg p-4';
+            if(!flag){
+                card.innerHTML = `
+                <img src="${project.image}" alt="${project.title}" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h3 class="text-xl font-bold mb-2">${project.title}</h3>
+                <p class="text-gray-300 mb-4">${project.description}</p>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <span class="text-blue-400 font-semibold w-20">技术栈：</span>
+                        <span class="text-gray-300">${project.tech}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-blue-400 font-semibold w-20">团队：</span>
+                        <span class="text-gray-300">${project.team}</span>
+                    </div>
+                </div>
+            `;
+            } else {
+                card.innerHTML = `
+                                <img src="${project.image}" alt="${project.title}" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h3 class="text-xl font-bold mb-2">${project.title}</h3>
+                <p class="text-gray-300 mb-4">${project.description}</p>
+                `;
+                /**
+                 *                 <div class="space-y-2">
+                 *                     <div class="flex items-center">
+                 *                         <span class="text-blue-400 font-semibold w-20">技术栈：</span>
+                 *                         <span class="text-gray-300">${project.tech}</span>
+                 *                     </div>
+                 *                     <div class="flex items-center">
+                 *                         <span class="text-blue-400 font-semibold w-20">团队：</span>
+                 *                         <span class="text-gray-300">${project.team}</span>
+                 *                     </div>
+                 *                 </div>
+                 */
+            }
+            return card;
+        }
+
+        function closeProjects() {
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 键盘控制
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'Escape') {
+                closeProjects();
+            }
+        });
+
+        // 触摸控制
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const swipeLength = touchEndX - touchStartX;
+            
+            if (Math.abs(swipeLength) > swipeThreshold) {
+                if (swipeLength < 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }
+
+        // 自动播放
+        let autoplayInterval;
+        function startAutoplay() {
+            autoplayInterval = setInterval(nextSlide, 5000);
+        }
+        function stopAutoplay() {
+            clearInterval(autoplayInterval);
+        }
+
+        // 鼠标进入停止自动播放，离开继续
+        document.addEventListener('mouseover', stopAutoplay);
+        document.addEventListener('mouseout', startAutoplay);
+
+        // 开始自动播放
+        startAutoplay();
+
+        // 项目模态框点击外部关闭
+        document.getElementById('projectModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('projectModal')) {
+                closeProjects();
+            }
+        });
+         // 更新分享功能  
+            function shareAlbum(platform) {  
+                // 这里添加实际的分享逻辑  
+                const shareData = {  
+                    title: 'XXX协会三周年纪念相册',  
+                    desc: '见证XXX协会三年发展历程',  
+                    link: window.location.href,  
+                    imgUrl: '/path/to/share/image.jpg'  
+                };  
+
+                if (platform === 'wechat') {  
+                    // 调用微信分享API  
+                    alert('请通过微信扫描二维码分享');  
+                } else if (platform === 'weibo') {  
+                    // 调用微博分享API  
+                    const weiboUrl = `http://service.weibo.com/share/share.php?url=${encodeURIComponent(shareData.link)}&title=${encodeURIComponent(shareData.title)}`;  
+                    window.open(weiboUrl, '_blank');  
+                }  
+            }  
+
+            // 更新自动播放逻辑，在最后一页停止  
+            function nextSlide() {  
+                if (currentSlide === totalSlides - 1) {  
+                    // 如果是最后一页，停止自动播放  
+                    stopAutoplay();  
+                    return;  
+                }  
+                currentSlide = (currentSlide + 1) % totalSlides;  
+                updateSlides();  
+            }  
+
+            // 其他JavaScript代码保持不变  
+    </script>
+</body>
+</html>
